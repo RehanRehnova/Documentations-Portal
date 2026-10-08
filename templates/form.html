@@ -59,7 +59,7 @@
   </div>
 
   <div class="field">
-    <label for="admission_id">Admission ID</label>
+    <label Roll ID</label>
     <input id="admission_id" name="admission_id" value="{{ data.admission_id }}" maxlength="40" required aria-invalid="{{ 'true' if errors.admission_id else 'false' }}">
     {% if errors.admission_id %}<p class="error" role="alert">{{ errors.admission_id }}</p>{% endif %}
   </div>
@@ -89,7 +89,7 @@
   </div>
 
   <div class="field">
-    <label for="city">City Mailing Address</label>
+    <label for="city">City (Mailing Address)</label>
     <input id="city" name="city" value="{{ data.city }}" autocomplete="address-level2" maxlength="60" required aria-invalid="{{ 'true' if errors.city else 'false' }}">
     {% if errors.city %}<p class="error" role="alert">{{ errors.city }}</p>{% endif %}
   </div>
