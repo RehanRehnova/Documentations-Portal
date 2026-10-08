@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Office connection · {{ institution }}{% endblock %}
+{% block main %}
+<section class="card admin reveal">
+  {% if not signed_in %}
+  <p class="kicker">Office</p>
+  <h1>Office sign-in</h1>
+  <p class="lede">This page connects the admission form to the office Google Sheet. Students do not need it.</p>
+  {% if error %}<p class="banner" role="alert">{{ error }}</p>{% endif %}
+  <form method="post" action="{{ url_for('admin') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>
+      Setup key
+      <input type="password" name="setup_key" autocomplete="current-password" required>
+    </label>
+    <button type="submit">Continue</button>
+  </form>
+  {% else %}
+  <p class="kicker">Office</p>
+  <h1>Google Sheets connection</h1>
+  <p class="lede">{{ status.detail }}</p>
+  <dl class="status">
+    <div><dt>Client ID</dt><dd>{{ "Set" if status.client_id_set else "Missing" }}</dd></div>
+    <div><dt>Client secret</dt><dd>{{ "Set" if status.client_secret_set else "Missing" }}</dd></div>
+    <div><dt>Spreadsheet</dt><dd>{{ "Set" if status.spreadsheet_id_set else "Missing" }}</dd></div>
+    <div><dt>Worksheet</dt><dd>{{ status.sheet_name }}</dd></div>
+    <div><dt>Refresh token</dt><dd>{{ "Set" if status.refresh_token_set else "Missing" }}</dd></div>
+    <div><dt>Token usable</dt><dd>{{ "Yes" if status.token_valid else "No" }}</dd></div>
+  </dl>
+  <p class="quiet">In Google Cloud, the OAuth client must be a Web application, and this redirect URI must be listed exactly:</p>
+  <p class="mono">{{ status.redirect_uri }}</p>
+  <div class="actions">
+    <form method="post" action="{{ url_for('admin_connect') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button type="submit">Connect Google account</button>
+    </form>
+    <form method="post" action="{{ url_for('admin_logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button class="secondary" type="submit">Sign out</button>
+    </form>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

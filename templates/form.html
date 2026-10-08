@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% block title %}Student Information · {{ institution }}{% endblock %}
+{% block main %}
+<form class="card reveal" id="student-form" method="post" action="{{ url_for('apply') }}" novalidate>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <header class="form-intro">
+    <p class="kicker">Application</p>
+    <h1>Student Information</h1>
+    <p class="lede">A record portal of one student’s admission details for the class.</p>
+    <p class="lede">This portal is created by CR Rehan Bhatti & GR Bushra Batool</p>
+  </header>
+
+  {% if notice %}
+  <p class="banner" role="alert">{{ notice }}</p>
+  {% endif %}
+  {% if errors %}
+  <p class="banner" role="alert">Some answers need to be corrected before this application can be saved.</p>
+  {% endif %}
+
+  <div class="field">
+    <label for="name">Name</label>
+    <input id="name" name="name" value="{{ data.name }}" autocomplete="name" maxlength="80" required aria-invalid="{{ 'true' if errors.name else 'false' }}">
+    {% if errors.name %}<p class="error" role="alert">{{ errors.name }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="father_name">Father's Name</label>
+    <input id="father_name" name="father_name" value="{{ data.father_name }}" maxlength="80" required aria-invalid="{{ 'true' if errors.father_name else 'false' }}">
+    {% if errors.father_name %}<p class="error" role="alert">{{ errors.father_name }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="gender">Gender</label>
+    <select id="gender" name="gender" required aria-invalid="{{ 'true' if errors.gender else 'false' }}">
+      <option value="" {% if not data.gender %}selected{% endif %}>Select</option>
+      {% for option in genders %}
+      <option value="{{ option }}" {% if data.gender == option %}selected{% endif %}>{{ option }}</option>
+      {% endfor %}
+    </select>
+    {% if errors.gender %}<p class="error" role="alert">{{ errors.gender }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="date_of_birth">Date of Birth</label>
+    <input id="date_of_birth" type="date" name="date_of_birth" value="{{ data.date_of_birth }}" required aria-invalid="{{ 'true' if errors.date_of_birth else 'false' }}">
+    {% if errors.date_of_birth %}<p class="error" role="alert">{{ errors.date_of_birth }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="cnic">CNIC Number</label>
+    <input id="cnic" name="cnic" value="{{ data.cnic }}" inputmode="numeric" maxlength="13" pattern="[0-9]{13}" placeholder="4210112345671" required aria-invalid="{{ 'true' if errors.cnic else 'false' }}">
+    {% if errors.cnic %}<p class="error" id="cnic-error" role="alert">{{ errors.cnic }}</p>{% else %}<p class="error" id="cnic-error" role="alert" hidden>Enter exactly 13 numbers. Letters, dashes, and spaces are not allowed.</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="nationality">Nationality</label>
+    <input id="nationality" name="nationality" value="{{ data.nationality }}" maxlength="40" required aria-invalid="{{ 'true' if errors.nationality else 'false' }}">
+    {% if errors.nationality %}<p class="error" role="alert">{{ errors.nationality }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="admission_id">Admission ID</label>
+    <input id="admission_id" name="admission_id" value="{{ data.admission_id }}" maxlength="40" required aria-invalid="{{ 'true' if errors.admission_id else 'false' }}">
+    {% if errors.admission_id %}<p class="error" role="alert">{{ errors.admission_id }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="admission_date">Admission Date</label>
+    <input id="admission_date" type="date" name="admission_date" value="{{ data.admission_date }}" required aria-invalid="{{ 'true' if errors.admission_date else 'false' }}">
+    {% if errors.admission_date %}<p class="error" role="alert">{{ errors.admission_date }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="phone">Phone Number</label>
+    <input id="phone" name="phone" value="{{ data.phone }}" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="03001234567" required aria-invalid="{{ 'true' if errors.phone else 'false' }}">
+    {% if errors.phone %}<p class="error" role="alert">{{ errors.phone }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="email">Email Address</label>
+    <input id="email" type="text" name="email" value="{{ data.email }}" inputmode="email" autocomplete="email" maxlength="254" required aria-invalid="{{ 'true' if errors.email else 'false' }}">
+    <p class="error" id="email-error" role="alert" {% if not errors.email %}hidden{% endif %}>This is not an email address. Enter an email address. Suggested email addresses are Gmail, Proton, or whatever mail anyone likes to add.</p>
+  </div>
+
+  <div class="field">
+    <label for="mailing_address">Mailing Address</label>
+    <textarea id="mailing_address" name="mailing_address" rows="4" maxlength="300" required aria-invalid="{{ 'true' if errors.mailing_address else 'false' }}">{{ data.mailing_address }}</textarea>
+    {% if errors.mailing_address %}<p class="error" role="alert">{{ errors.mailing_address }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="city">City Mailing Address</label>
+    <input id="city" name="city" value="{{ data.city }}" autocomplete="address-level2" maxlength="60" required aria-invalid="{{ 'true' if errors.city else 'false' }}">
+    {% if errors.city %}<p class="error" role="alert">{{ errors.city }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="domicile_district">Domicile District</label>
+    <input id="domicile_district" name="domicile_district" value="{{ data.domicile_district }}" maxlength="60" required aria-invalid="{{ 'true' if errors.domicile_district else 'false' }}">
+    {% if errors.domicile_district %}<p class="error" role="alert">{{ errors.domicile_district }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="domicile_province">Domicile Province</label>
+    <input id="domicile_province" name="domicile_province" value="{{ data.domicile_province }}" maxlength="40" required aria-invalid="{{ 'true' if errors.domicile_province else 'false' }}">
+    {% if errors.domicile_province %}<p class="error" role="alert">{{ errors.domicile_province }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="ssc_degree">SSC Degree</label>
+    <select id="ssc_degree" name="ssc_degree" required aria-invalid="{{ 'true' if errors.ssc_degree else 'false' }}">
+      <option value="" {% if not data.ssc_degree %}selected{% endif %}>Select</option>
+      {% for option in ssc_degrees %}
+      <option value="{{ option }}" {% if data.ssc_degree == option %}selected{% endif %}>{{ option }}</option>
+      {% endfor %}
+    </select>
+    {% if errors.ssc_degree %}<p class="error" role="alert">{{ errors.ssc_degree }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="ssc_board">SSC Board</label>
+    <input id="ssc_board" name="ssc_board" value="{{ data.ssc_board }}" maxlength="80" required aria-invalid="{{ 'true' if errors.ssc_board else 'false' }}">
+    {% if errors.ssc_board %}<p class="error" role="alert">{{ errors.ssc_board }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="ssc_total_marks">SSC Total Marks</label>
+    <input id="ssc_total_marks" type="number" name="ssc_total_marks" value="{{ data.ssc_total_marks }}" inputmode="numeric" min="1" max="9999" step="1" required aria-invalid="{{ 'true' if errors.ssc_total_marks else 'false' }}">
+    {% if errors.ssc_total_marks %}<p class="error" role="alert">{{ errors.ssc_total_marks }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="ssc_obtained_marks">SSC Obtained Marks</label>
+    <input id="ssc_obtained_marks" type="number" name="ssc_obtained_marks" value="{{ data.ssc_obtained_marks }}" inputmode="numeric" min="0" max="9999" step="1" required aria-invalid="{{ 'true' if errors.ssc_obtained_marks else 'false' }}">
+    {% if errors.ssc_obtained_marks %}<p class="error" role="alert">{{ errors.ssc_obtained_marks }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="hssc_degree">HSSC Degree</label>
+    <select id="hssc_degree" name="hssc_degree" required aria-invalid="{{ 'true' if errors.hssc_degree else 'false' }}">
+      <option value="" {% if not data.hssc_degree %}selected{% endif %}>Select</option>
+      {% for option in hssc_degrees %}
+      <option value="{{ option }}" {% if data.hssc_degree == option %}selected{% endif %}>{{ option }}</option>
+      {% endfor %}
+    </select>
+    {% if errors.hssc_degree %}<p class="error" role="alert">{{ errors.hssc_degree }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="hssc_board">HSSC Board</label>
+    <input id="hssc_board" name="hssc_board" value="{{ data.hssc_board }}" maxlength="80" required aria-invalid="{{ 'true' if errors.hssc_board else 'false' }}">
+    {% if errors.hssc_board %}<p class="error" role="alert">{{ errors.hssc_board }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="hssc_total_marks">HSSC Total Marks</label>
+    <input id="hssc_total_marks" type="number" name="hssc_total_marks" value="{{ data.hssc_total_marks }}" inputmode="numeric" min="1" max="9999" step="1" required aria-invalid="{{ 'true' if errors.hssc_total_marks else 'false' }}">
+    {% if errors.hssc_total_marks %}<p class="error" role="alert">{{ errors.hssc_total_marks }}</p>{% endif %}
+  </div>
+
+  <div class="field">
+    <label for="hssc_obtained_marks">HSSC Obtained Marks</label>
+    <input id="hssc_obtained_marks" type="number" name="hssc_obtained_marks" value="{{ data.hssc_obtained_marks }}" inputmode="numeric" min="0" max="9999" step="1" required aria-invalid="{{ 'true' if errors.hssc_obtained_marks else 'false' }}">
+    {% if errors.hssc_obtained_marks %}<p class="error" role="alert">{{ errors.hssc_obtained_marks }}</p>{% endif %}
+  </div>
+
+  <label class="confirm" for="confirm-correct">
+    <input id="confirm-correct" type="checkbox" name="declaration" value="yes" {% if data.declaration == "yes" %}checked{% endif %}>
+    <span>I confirm that the information is correct.</span>
+  </label>
+  {% if errors.declaration %}<p class="error" role="alert">{{ errors.declaration }}</p>{% endif %}
+
+  <button type="submit" id="submit-btn" {% if data.declaration != "yes" %}disabled{% endif %}>Submit</button>
+</form>
+<script>
+(function () {
+  var form = document.getElementById("student-form");
+  var box = document.getElementById("confirm-correct");
+  var button = document.getElementById("submit-btn");
+  var cnic = document.getElementById("cnic");
+  var cnicError = document.getElementById("cnic-error");
+  var email = document.getElementById("email");
+  var emailError = document.getElementById("email-error");
+  var emailPattern = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
+
+  function syncButton() {
+    button.disabled = !box.checked;
+  }
+
+  box.addEventListener("change", syncButton);
+  syncButton();
+
+  cnic.addEventListener("input", function () {
+    var digits = cnic.value.replace(/\D/g, "").slice(0, 13);
+    if (cnic.value !== digits) cnic.value = digits;
+  });
+
+  form.addEventListener("submit", function (event) {
+    var blocked = false;
+    if (!emailPattern.test(email.value.trim())) {
+      emailError.hidden = false;
+      email.setAttribute("aria-invalid", "true");
+      blocked = true;
+    }
+    if (!/^\d{13}$/.test(cnic.value)) {
+      cnicError.hidden = false;
+      cnic.setAttribute("aria-invalid", "true");
+      blocked = true;
+    }
+    if (blocked) {
+      event.preventDefault();
+      (emailError.hidden ? cnic : email).focus();
+    }
+  });
+})();
+</script>
+{% endblock %}

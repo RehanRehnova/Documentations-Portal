@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Application received · {{ institution }}{% endblock %}
+{% block main %}
+<section class="card receipt reveal">
+  <p class="kicker">Application received</p>
+  <h1>Keep this receipt number</h1>
+  <p class="receipt-no">{{ receipt.receipt }}</p>
+  <dl>
+    <div><dt>Name</dt><dd>{{ receipt.name }}</dd></div>
+    <div><dt>Admission ID</dt><dd>{{ receipt.admission_id }}</dd></div>
+    <div><dt>CNIC Number</dt><dd>{{ receipt.cnic_masked }}</dd></div>
+    <div><dt>Email</dt><dd>{{ receipt.email }}</dd></div>
+    <div><dt>Submitted</dt><dd>{{ receipt.submitted_at }} PKT</dd></div>
+  </dl>
+  <p class="quiet">The admissions office can find this application with the receipt number. Submitting the form again adds another row.</p>
+  <a class="button" href="{{ url_for('form') }}">Submit another application</a>
+</section>
+{% endblock %}

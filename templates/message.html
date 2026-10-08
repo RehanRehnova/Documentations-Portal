@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · {{ institution }}{% endblock %}
+{% block main %}
+<section class="card receipt reveal">
+  <h1>{{ title }}</h1>
+  <p class="lede">{{ body }}</p>
+  <a class="button" href="{{ next_href }}">{{ next_label }}</a>
+</section>
+{% endblock %}
