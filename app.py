@@ -59,8 +59,8 @@ def create_app() -> Flask:
 
     @app.get("/")
     def form():
-        return render_template("portal-closed.html")
-#("form.html", **_form_context(blank_form(), #{}))
+        return render_template("form.html", **_form_context(blank_form(), {}))
+
 
     @app.post("/apply")
     def apply():
